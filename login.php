@@ -1,4 +1,12 @@
 <?php
+require_once 'auth.php';
+
+// If user is already logged in, redirect to home
+if (isLoggedIn()) {
+    header('Location: home1.php');
+    exit();
+}
+
 $connect = mysqli_connect("localhost", "root", "", "food") or die("Connection failed: " . mysqli_connect_error());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
@@ -24,9 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                 if ($count > 0) {
                     error_log("Login successful for email: $email");
                     // Start session and set user_id
-                    session_start();
-                    $_SESSION['user_id'] = $email; // Assuming email is used as user_id
-                    header('Location: home1.php'); // Redirect to home1.php
+                    $_SESSION['user_id'] = $email;
+                    
+                    // Set authentication cookie
+                    setAuthCookie($email);
+                    
+                    header('Location: home1.php');
                     exit();
                 } else {
                     error_log("Invalid login for email: $email");

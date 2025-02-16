@@ -1,5 +1,9 @@
 <?php
-session_start();
+require_once 'auth.php';
+requireLogin();
+
+// Remove redundant session_start() since it's already called in auth.php
+
 // Add session check to prevent unauthorized access
 if(!isset($_SESSION['user_id'])){
     header('location:login.php');

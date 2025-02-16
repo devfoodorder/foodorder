@@ -1,7 +1,14 @@
 <?php
+require_once 'auth.php';
+
+// Clear session
 session_start();
-session_unset();
 session_destroy();
-header('location:login.php');
+
+// Clear authentication cookie
+clearAuthCookie();
+
+// Redirect to login page
+header('Location: login.php');
 exit();
 ?> 

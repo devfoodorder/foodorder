@@ -22,6 +22,22 @@ if(isset($_GET['delete_all'])){
    header('location:cart.php');
 }
 
+function isOnlyBurgerInCart($conn) {
+    $select_cart = mysqli_query($conn, "SELECT * FROM `cart`");
+    $has_burger = false;
+    $has_other_items = false;
+    
+    while($item = mysqli_fetch_assoc($select_cart)) {
+        if($item['name'] === 'tomato-onion burger') {
+            $has_burger = true;
+        } else {
+            $has_other_items = true;
+        }
+    }
+    
+    return $has_burger && !$has_other_items;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -100,6 +116,12 @@ if(isset($_GET['delete_all'])){
       }
       .option-btn:hover {
          background: #0056b3;
+      }
+      .payment-note {
+         color: #e74c3c;
+         font-size: 0.9em;
+         font-style: italic;
+         margin-bottom: 10px;
       }
    </style>
 </head>

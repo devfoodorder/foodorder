@@ -2,8 +2,15 @@
 
 @include 'config.php';
 session_start();
-if(isset($_POST['add_to_cart'])){
 
+// Add USD to INR conversion function
+function convertUSDtoINR($usd) {
+    // Using a fixed conversion rate (you may want to use a real-time API)
+    $conversion_rate = 75; // 1 USD = 75 INR (approximate)
+    return round($usd * $conversion_rate);
+}
+
+if(isset($_POST['add_to_cart'])){
    $product_name = $_POST['product_name'];
    $product_price = $_POST['product_price'];
    $product_image = $_POST['product_image'];
@@ -18,7 +25,6 @@ if(isset($_POST['add_to_cart'])){
       $insert_product = mysqli_query($conn, "INSERT INTO `cart`(name, price, image, quantity, sessionid) VALUES('$product_name', '$product_price', '$product_image', '$product_quantity', '$sessionid')");
       $message[] = 'Product added to cart successfully';
    }
-
 }
 
 ?>
@@ -133,17 +139,21 @@ if(isset($message)){
       $select_products = mysqli_query($conn, "SELECT * FROM `product`");
       if(mysqli_num_rows($select_products) > 0){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
+            $price_display = $fetch_product['price'];
+            $button_text = "Add to Delivery";
+            
+            // Remove the tomato-onion burger specific code since we're not using payment gateway anymore
       ?>
 
       <form action="" method="post">
          <div class="box">
             <img src="admin/images/<?php echo $fetch_product['image']; ?>" alt="">
             <h3><?php echo $fetch_product['name']; ?></h3>
-            <div class="price">Rs.<?php echo $fetch_product['price']; ?>/-</div>
+            <div class="price">Rs.<?php echo $price_display; ?>/-</div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
-            <input type="submit" class="btn" value="Add to Delivery" name="add_to_cart">
+            <input type="submit" class="btn" value="<?php echo $button_text; ?>" name="add_to_cart">
          </div>
       </form>
 

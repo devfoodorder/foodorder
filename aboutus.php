@@ -102,6 +102,10 @@
             flex-direction: column;
             align-items: center;
             transition: transform 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .unit:hover {
@@ -111,7 +115,7 @@
         .unit img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
+            border-radius: 10px 10px 0 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
